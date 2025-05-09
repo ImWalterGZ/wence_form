@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Formulario de Solicitud de Hospitalización - Hospital Regional Magdalena"
+    />
+    <title>Solicitud de Hospitalización - Hospital Regional Magdalena</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --primary-color: #2563eb;
+        --error-color: #dc2626;
+      }
+
+      body {
+        font-family: "Inter", sans-serif;
+        margin: 0; /* Reset default margin */
+        padding: 0; /* Reset default padding */
+        min-height: 100vh;
+      }
+      .container {
+        width: 210mm; /* A4 width */
+        min-height: 297mm; /* A4 height */
+        margin: 30px auto; /* Center on page with some margin */
+        padding: 20mm; /* Padding inside the A4 container */
+        background-color: white;
+      }
+      .header {
+        text-align: center;
+        margin-bottom: 10mm;
+      }
+      .header svg {
+        width: 16mm;
+        height: 16mm;
+        margin-bottom: 2mm;
+      }
+      .header h1 {
+        font-size: 14pt;
+        margin: 1mm 0;
+      }
+      .header h2 {
+        font-size: 12pt;
+        margin: 1mm 0;
+      }
+      .header h3 {
+        font-size: 11pt;
+        margin: 1mm 0;
+      }
+      .form-table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+      .form-table td {
+        padding: 4mm 2mm;
+        vertical-align: top;
+      }
+      .form-label {
+        font-size: 0.875rem;
+        font-weight: 500;
+        color: #374151;
+        display: block;
+        margin-bottom: 2mm;
+      }
+      .form-control {
+        width: 100%;
+        border: 1px solid #9ca3af;
+        padding: 0.5rem;
+        border-radius: 0.375rem;
+        font-size: 1rem;
+      }
+      .required::after {
+        content: "*";
+        color: var(--error-color);
+        margin-left: 0.25rem;
+      }
+      .error-message {
+        color: var(--error-color);
+        font-size: 0.75rem;
+        margin-top: 0.25rem;
+        display: none;
+      }
+      .error-message.visible {
+        display: block;
+      }
+      .indicaciones-table {
+        width: 100%;
+        margin-top: 6mm;
+      }
+      .indicaciones-table td {
+        padding: 3mm 2mm;
+      }
+      .numero {
+        width: 8mm;
+        text-align: right;
+        padding-right: 3mm;
+      }
+      .firma {
+        text-align: center;
+        margin-top: 25mm;
+      }
+      .firma-linea {
+        border-top: 1px solid #000;
+        width: 60mm;
+        margin: 0 auto;
+        padding-top: 2mm;
+      }
+      /* Print-specific styles */
+      @media print {
+        body {
+          margin: 0;
+          padding: 0;
+          background: white;
+          font-size: 12pt;
+        }
+        .container {
+          width: 100%;
+          min-height: 0;
+          margin: 0;
+          padding: 15mm;
+          box-shadow: none;
+        }
+        .header {
+          margin-bottom: 8mm;
+        }
+        .header svg {
+          width: 12mm;
+          height: 12mm;
+          margin-bottom: 1mm;
+        }
+        .header h1 {
+          font-size: 11pt;
+          margin: 0.5mm 0;
+        }
+        .header h2 {
+          font-size: 10pt;
+          margin: 0.5mm 0;
+        }
+        .header h3 {
+          font-size: 9pt;
+          margin: 0.5mm 0;
+        }
+        .form-control {
+          border: none;
+          border-bottom: 0.5pt solid #000;
+          border-radius: 0;
+          padding: 1mm 0;
+          background: transparent;
+        }
+        .form-label {
+          font-size: 10pt;
+          margin-bottom: 1mm;
+        }
+        .no-print,
+        .error-message {
+          display: none !important;
+        }
+        select.form-control {
+          -webkit-appearance: none;
+          -moz-appearance: none;
+          appearance: none;
+        }
+      }
+    </style>
+  </head>
+  <body class="bg-gray-100">
+    <main class="container">
+      <form id="hospitalizationForm" novalidate>
+        <div class="header">
+          <svg
+            class="mx-auto"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+            aria-hidden="true"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M12 6.253v11.494m0 0A8.001 8.001 0 004 12a8.001 8.001 0 008 8.001zm0 0A8.001 8.001 0 0120 12a8.001 8.001 0 01-8 8.001z"
+            ></path>
+          </svg>
+          <h1>Servicios de Salud Jalisco</h1>
+          <h2>HOSPITAL REGIONAL MAGDALENA</h2>
+          <h3>SOLICITUD DE HOSPITALIZACIÓN</h3>
+        </div>
+
+        <table class="form-table">
+          <tr>
+            <td colspan="3">
+              <label for="paciente" class="form-label required">
+                Favor de Hospitalizar al Paciente:
+              </label>
+              <input
+                type="text"
+                id="paciente"
+                name="paciente"
+                class="form-control"
+                required
+                pattern="^[A-ZÁÉÍÓÚÑ][a-záéíóúñ]+ [A-ZÁÉÍÓÚÑ][a-záéíóúñ]+(?: [A-ZÁÉÍÓÚÑ][a-záéíóúñ]+)?$"
+              />
+              <div id="paciente-error" class="error-message">
+                Por favor ingrese nombre y apellidos correctamente
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <label for="expediente" class="form-label required">
+                Expediente No.:
+              </label>
+              <input
+                type="text"
+                id="expediente"
+                name="expediente"
+                class="form-control"
+                required
+                pattern="^\d{2} \d{2} \d{2}$"
+              />
+              <div id="expediente-error" class="error-message">
+                Formato requerido: XX XX XX
+              </div>
+            </td>
+            <td>
+              <label for="dia" class="form-label required"> El Día: </label>
+              <input
+                type="date"
+                id="dia"
+                name="dia"
+                class="form-control"
+                required
+              />
+              <div id="dia-error" class="error-message">
+                Seleccione una fecha válida
+              </div>
+            </td>
+            <td>
+              <label for="hora" class="form-label required"> A las: </label>
+              <input
+                type="time"
+                id="hora"
+                name="hora"
+                class="form-control"
+                required
+              />
+              <div id="hora-error" class="error-message">
+                Seleccione una hora válida
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="2">
+              <label for="servicio" class="form-label required">
+                En el Servicio de:
+              </label>
+              <select
+                id="servicio"
+                name="servicio"
+                class="form-control"
+                required
+              >
+                <option value="">Seleccione un servicio</option>
+                <option value="PEDIATRÍA">PEDIATRÍA</option>
+                <option value="CIRUGÍA">CIRUGÍA</option>
+                <option value="MEDICINA INTERNA">MEDICINA INTERNA</option>
+                <option value="GINECOLOGÍA">GINECOLOGÍA</option>
+                <option value="URGENCIAS">URGENCIAS</option>
+              </select>
+              <div id="servicio-error" class="error-message">
+                Seleccione un servicio
+              </div>
+            </td>
+            <td>
+              <label for="sometido_a" class="form-label required">
+                Para ser sometido a:
+              </label>
+              <input
+                type="text"
+                id="sometido_a"
+                name="sometido_a"
+                class="form-control"
+                required
+              />
+              <div id="sometido_a-error" class="error-message">
+                Este campo es requerido
+              </div>
+            </td>
+          </tr>
+        </table>
+
+        <table class="indicaciones-table">
+          <tr>
+            <td colspan="2">
+              <h4 class="form-label">Con las Siguientes Indicaciones:</h4>
+            </td>
+          </tr>
+          <tr>
+            <td class="numero">1.-</td>
+            <td>
+              <input
+                type="text"
+                name="indicacion_1"
+                class="form-control"
+                required
+              />
+            </td>
+          </tr>
+          <tr>
+            <td class="numero">2.-</td>
+            <td>
+              <input type="text" name="indicacion_2" class="form-control" />
+            </td>
+          </tr>
+          <tr>
+            <td class="numero">3.-</td>
+            <td>
+              <input type="text" name="indicacion_3" class="form-control" />
+            </td>
+          </tr>
+          <tr>
+            <td class="numero">4.-</td>
+            <td>
+              <input type="text" name="indicacion_4" class="form-control" />
+            </td>
+          </tr>
+          <tr>
+            <td class="numero">5.-</td>
+            <td>
+              <input type="text" name="indicacion_5" class="form-control" />
+            </td>
+          </tr>
+          <tr>
+            <td class="numero">6.-</td>
+            <td>
+              <input type="text" name="indicacion_6" class="form-control" />
+            </td>
+          </tr>
+          <tr>
+            <td class="numero">7.-</td>
+            <td>
+              <input type="text" name="indicacion_7" class="form-control" />
+            </td>
+          </tr>
+        </table>
+
+        <div class="firma">
+          <div class="firma-linea">
+            <p class="text-center text-sm">Firma del Médico</p>
+          </div>
+        </div>
+
+        <div class="text-center mt-10 space-x-4 no-print">
+          <button
+            type="submit"
+            class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg shadow-md transition duration-150 ease-in-out"
+          >
+            Guardar
+          </button>
+          <button
+            type="button"
+            onclick="window.print()"
+            class="bg-gray-600 hover:bg-gray-700 text-white font-bold py-3 px-6 rounded-lg shadow-md transition duration-150 ease-in-out"
+          >
+            Imprimir
+          </button>
+          <button
+            type="reset"
+            class="bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-6 rounded-lg shadow-md transition duration-150 ease-in-out"
+          >
+            Limpiar
+          </button>
+        </div>
+      </form>
+    </main>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const form = document.getElementById("hospitalizationForm");
+        const inputs = form.querySelectorAll("input, select");
+
+        // Establecer fecha mínima como hoy
+        const today = new Date().toISOString().split("T")[0];
+        document.getElementById("dia").min = today;
+
+        // Validación en tiempo real
+        inputs.forEach((input) => {
+          input.addEventListener("input", function () {
+            validateInput(this);
+          });
+
+          input.addEventListener("blur", function () {
+            validateInput(this);
+          });
+        });
+
+        // Validación del formulario completo
+        form.addEventListener("submit", function (e) {
+          e.preventDefault();
+
+          let isValid = true;
+          inputs.forEach((input) => {
+            if (input.required && !validateInput(input)) {
+              isValid = false;
+            }
+          });
+
+          if (isValid) {
+            // Aquí iría la lógica para enviar el formulario
+            alert("Formulario válido - Listo para enviar");
+            // form.submit(); // Descomentar cuando haya backend
+          }
+        });
+
+        // Función de validación de campos
+        function validateInput(input) {
+          const errorElement = document.getElementById(`${input.id}-error`);
+          let isValid = true;
+
+          // Remover estados de error previos
+          input.classList.remove("error");
+          if (errorElement) {
+            errorElement.classList.remove("visible");
+          }
+
+          // Validaciones específicas por tipo de campo
+          if (input.required && !input.value) {
+            isValid = false;
+          } else if (
+            input.pattern &&
+            !new RegExp(input.pattern).test(input.value)
+          ) {
+            isValid = false;
+          } else if (input.type === "date" && input.value < today) {
+            isValid = false;
+          }
+
+          // Aplicar estados de error si es necesario
+          if (!isValid && errorElement) {
+            input.classList.add("error");
+            errorElement.classList.add("visible");
+          }
+
+          return isValid;
+        }
+
+        // Autoguardado
+        let autoSaveTimeout;
+        inputs.forEach((input) => {
+          input.addEventListener("input", function () {
+            clearTimeout(autoSaveTimeout);
+            autoSaveTimeout = setTimeout(() => {
+              const formData = new FormData(form);
+              const data = Object.fromEntries(formData.entries());
+              localStorage.setItem("hospitalFormData", JSON.stringify(data));
+            }, 1000);
+          });
+        });
+
+        // Recuperar datos autoguardados
+        const savedData = localStorage.getItem("hospitalFormData");
+        if (savedData) {
+          const data = JSON.parse(savedData);
+          Object.entries(data).forEach(([key, value]) => {
+            const input = form.querySelector(`[name="${key}"]`);
+            if (input) {
+              input.value = value;
+            }
+          });
+        }
+      });
+    </script>
+  </body>
+</html>
